@@ -1,10 +1,16 @@
 import React, { Component } from 'react';
-import RoutesComponent from './routes'
+import { BrowserRouter as Router, Switch } from "react-router-dom";
+import RoutesComponent from './component/RoutesComponent'
+import { routesConfig } from './routes'
 
 class App extends Component {
   render() {
-    return (
-      <RoutesComponent />
+    console.log(routesConfig)
+    return (<Router>
+      <Switch>
+        <RoutesComponent routesConfig={routesConfig} />
+      </Switch>
+    </Router>
     );
   }
 }

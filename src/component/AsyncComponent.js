@@ -17,12 +17,13 @@ export default class AsyncComponent extends React.Component {
   }
   render() {
     const { Component } = this.state;
-    const { Placeholder, ...props } = this.props;
-    return Component ? <Component {...props} /> : <Placeholder />;
+    const { Placeholder, routes, ...props } = this.props;
+    return Component ? <Component routes={routes} {...props} /> : <Placeholder />;
   }
 }
 
 AsyncComponent.propTypes = {
   loader: PropTypes.func.isRequired,
-  Placeholder: PropTypes.func.isRequired
+  Placeholder: PropTypes.func.isRequired,
+  routes: PropTypes.array.isRequired
 };

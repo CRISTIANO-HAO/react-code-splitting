@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import logo from './../../logo.svg';
 import './App.css';
+import { routesConfig } from './../../routes'
 
 class App extends Component {
   render() {
@@ -8,12 +9,10 @@ class App extends Component {
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
+          <p> </p>
           <a
             className="App-link"
-            href="/react-router"
+            href={routesConfig[1]['link']}
             rel="noopener noreferrer"
           >
             Learn React Router

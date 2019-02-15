@@ -1,54 +1,95 @@
 /*
  * @Author: haotengfei 
- * @Date: 2019-02-14 11:40:19 
+ * @Date: 2019-02-14 11:25:32 
  * @Last Modified by: haotengfei
- * @Last Modified time: 2019-02-14 15:27:52
+ * @Last Modified time: 2019-02-15 19:07:56
  */
 
-import React, { Component, Suspense, lazy } from 'react'
-import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
-import propTypes from 'proptypes'
-
-import { routesConfig } from './config'
-import AsyncComponent from './../component/AsyncComponent'
-import Placeholder from './../component/Placeholder'
-
-// 目前lazy方法会报警告，暂无解决方案
-// Warning: Failed prop type: Invalid prop `component` of type `object` supplied to `Route`, expected `function`.
-function getLazyRoutes(routesConfig) {
-  return (<Suspense fallback={Placeholder}>
-    {routesConfig.map(route => {
-      route.component = lazy(route.component)
-      return <Route key={route.name} {...route} />
-    })}
-  </Suspense>)
-}
-
-// 按需加载代码分割点
-function getDynamicRoutes(routesConfig) {
-  return routesConfig.map(route => {
-    const component = route.component
-    route.component = (props) => <AsyncComponent loader={component} Placeholder={Placeholder} {...props} />
-    return <Route key={route.name} {...route} />
-  })
-}
-
-const RouteType = 'Dynamic'
-
-class RoutesComponent extends Component{
-  render() {
-    const { routeType = RouteType } = this.props
-    return (<Router>
-      <Switch>
-        {<Redirect exact from='/' to='/home'/>}
-        { routeType === RouteType ? getDynamicRoutes(routesConfig) : getLazyRoutes(routesConfig)}
-      </Switch>
-    </Router>)
+const routes = [{
+    name: 'Home',
+    path: '/',
+    exact: true,
+    component: () => import('../pages/Home'),
+  },
+  {
+    name: 'ReactRouter',
+    path: '/react-router',
+    component: () => import('../pages/ReactRouter'),
+    routes: [{
+        name: 'RouterA',
+        path: '/react-router/router-a',
+        // exact: true,
+        component: () => import('./../pages/ReactRouter/RouterA'),
+        routes: [{
+            name: 'RouterA_AA',
+            path: '/react-router/router-a/a_aa',
+            exact: false,
+            component: () => import('./../pages/ReactRouter/RouterA/A_AA'),
+          },
+          {
+            name: 'RouterA_BB',
+            path: '/react-router/router-a/a_bb',
+            component: () => import('./../pages/ReactRouter/RouterA/A_BB'),
+          }, {
+            name: 'RouterA_CC',
+            path: '/react-router/router-a/a_cc',
+            component: () => {
+              return import('./../pages/ReactRouter/RouterA/A_CC')
+            },
+          }
+        ]
+      },
+      {
+        name: 'RouterB',
+        path: '/react-router/router-b',
+        component: () => import('./../pages/ReactRouter/RouterB'),
+        routes: [{
+            name: 'RouterB_AA',
+            path: '/react-router/router-b/b_aa',
+            exact: false,
+            component: () => import('./../pages/ReactRouter/RouterB/B_AA'),
+          },
+          {
+            name: 'RouterB_BB',
+            path: '/react-router/router-b/b_bb',
+            component: () => import('./../pages/ReactRouter/RouterB/B_BB'),
+          }, {
+            name: 'RouterB_CC',
+            path: '/react-router/router-b/b_cc',
+            component: () => {
+              return import('./../pages/ReactRouter/RouterB/B_CC')
+            },
+          }
+        ]
+      }, {
+        name: 'RouterC',
+        path: '/react-router/router-c',
+        component: () => {
+          return import('./../pages/ReactRouter/RouterC')
+        },
+      }
+    ]
   }
+]
+
+function rewriteRoutePath (routes) {
+  if (!routes || routes.length === 0) {
+    return
+  }
+  routes.forEach(item => {
+    item.link = item.path
+    if(item['routes'] && item['routes'].length > 0) {
+      let route = item
+      let hasChild = route['routes'] && route['routes'].length > 0
+      while (hasChild) {
+        route = route['routes'][0]
+        hasChild = route['routes'] && route['routes'].length > 0
+      }
+      item.link = route.path
+      rewriteRoutePath(item.routes)
+    }
+  })
+  return routes
 }
 
-RoutesComponent.propTypes = {
-  routeType: propTypes.string
-}
-
-export default RoutesComponent
+export const routesConfig = rewriteRoutePath(routes)
