@@ -22,7 +22,7 @@ module.exports = {
     new CleanWebpackPlugin(['dist']),
     new HtmlWebpackPlugin({
       title: 'Output Management',
-      template: './src/index.html'
+      // template: './src/index.html'
     }),
     new BundleAnalyzerPlugin()
   ],
@@ -44,14 +44,14 @@ module.exports = {
       automaticNameDelimiter: '~',
       name: true,
       cacheGroups: {
-        vendors: {
-          test: /[\\/]node_modules[\\/]/,
-          priority: -10
-        },
-        'react-vendor': {
-          test: (module, chunks) => /react/.test(module.context),
-          priority: 1,
-        },
+        // vendors: {
+        //   test: /[\\/]node_modules[\\/]/,
+        //   priority: -10
+        // },
+        // 'react-vendor': {
+        //   test: (module, chunks) => /react/.test(module.context),
+        //   priority: 1,
+        // },
         default: {
           minChunks: 2,
           priority: -20,
@@ -77,9 +77,12 @@ module.exports = {
               cacheDirectory: true,
               babelrc: false,
               presets: [
-                'react', 'es2015', 'stage-0'
+                // 'react', 'es2015', 'stage-0'
+                  '@babel/react'
               ],
-              plugins: []
+              plugins: [
+                  "@babel/plugin-syntax-dynamic-import"
+              ]
             }
           }
         ]
@@ -108,18 +111,18 @@ module.exports = {
           'file-loader'
         ]
       },
-      {
-        test: /\.(csv|tsv)$/,
-        use: [
-          'csv-loader'
-        ]
-      },
-      {
-        test: /\.xml$/,
-        use: [
-          'xml-loader'
-        ]
-      }
+      // {
+      //   test: /\.(csv|tsv)$/,
+      //   use: [
+      //     'csv-loader'
+      //   ]
+      // },
+      // {
+      //   test: /\.xml$/,
+      //   use: [
+      //     'xml-loader'
+      //   ]
+      // }
     ]
   }
 };

@@ -1,18 +1,13 @@
 {
-  "name": "react-router",
+  "name": "react-code-splitting",
   "version": "0.1.0",
   "private": true,
-  "dependencies": {
-    "react": "^16.6.3",
-    "react-dom": "^16.6.3",
-    "react-router-dom": "^4.3.1",
-    "react-scripts": "2.1.5"
-  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "wbbuild": "webpack --watch --progress --color"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -23,7 +18,23 @@
     "not ie <= 11",
     "not op_mini all"
   ],
+  "dependencies": {
+    "react": "^16.6.3",
+    "react-dom": "^16.6.3",
+    "react-router-dom": "^4.3.1",
+    "react-scripts": "2.1.5"
+  },
   "devDependencies": {
-    "proptypes": "^1.1.0"
+    "@babel/plugin-syntax-dynamic-import": "^7.2.0",
+    "babel-loader": "^8.0.5",
+    "babel-preset-react": "^6.24.1",
+    "clean-webpack-plugin": "^1.0.1",
+    "css-loader": "^2.1.0",
+    "less": "^3.9.0",
+    "less-loader": "^4.1.0",
+    "proptypes": "^1.1.0",
+    "style-loader": "^0.23.1",
+    "webpack-bundle-analyzer": "^3.0.4",
+    "webpack-cli": "^3.2.3"
   }
 }
