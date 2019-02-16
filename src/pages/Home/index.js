@@ -15,7 +15,7 @@ class App extends Component {
             href={routesConfig[1]['link']}
             rel="noopener noreferrer"
           >
-            Learn React Router
+            Learn React Router, Let's go !!
           </a>
         </header>
       </div>
